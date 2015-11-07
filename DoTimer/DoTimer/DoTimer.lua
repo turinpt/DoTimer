@@ -2063,6 +2063,11 @@ function DoTimer_Startup() --called on first login per session, creates the defa
 		["Firelord"] = 1,
 	} 
 	end
+
+	-- Override config
+	DoTimer_Settings.locked = true
+	DoTimer_Settings.visible = false
+
 	if DoTimer_Settings.visible then DoTimerMainFrame:Show() else DoTimerMainFrame:Hide() end --obeying a couple  settings
 	DoTimerMainFrame:SetScale(DoTimer_Settings.scale)
 	for i = 1,10 do
