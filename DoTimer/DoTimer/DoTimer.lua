@@ -477,7 +477,9 @@ end
 function DoTimer_RemoveAllTimers()
 	DoTimer_Debug("the interface has been cleared")
 	for i = table.getn(casted),1,-1 do
-		table.remove(casted,i)
+		if (casted[i].type ~= "blank") then
+			table.remove(casted,i)
+		end
 	end
 	DoTimer_CreateInterface()
 end
@@ -2336,10 +2338,10 @@ function DGTimers_OnUpdate()
 			end
 			
 			if id == 1 then
-				if casted[i].type == "player" then
-					getglobal(barName.."Target"):SetText(string.format("%s",casted[i].target))
-				else
+				if casted[i].type == "mob" then
 					getglobal(barName.."Target"):SetText(string.format("%s [%d]",casted[i].target,casted[i].level))
+				else
+					getglobal(barName.."Target"):SetText("")
 				end
 				getglobal(barName.."Target"):SetFont(GameFontNormal:GetFont(), 10, "")
 				getglobal(barName.."Target"):SetTextColor(1,0.9,0)
@@ -2383,21 +2385,21 @@ end
 
 function test()
 	local self = 0
-			local ManaPot = { ["spell"] = "Mana Potion", ["duration"] = 70, ["time"] = GetTime() }
+	local ManaPot = { ["spell"] = "Mana Potion", ["duration"] = 70, ["time"] = GetTime() }
 			
-			for i = 1,table.getn(casted) do
-				if casted[i].target == "Self" then
-					self = i
-					break
-				end
-			end
+	for i = 1,table.getn(casted) do
+		if casted[i].target == "Self" then
+			self = i
+			break
+		end
+	end
 			
-			if self == 0 then
-				table.insert(casted, { ["target"] = "Self", type = "player" })
-				self = getn(casted)
-			end
+	if self == 0 then
+		table.insert(casted, { ["target"] = "", type = "blank" })
+		self = getn(casted)
+	end
 			
-			table.insert(casted[self], ManaPot)
+	table.insert(casted[self], ManaPot)
 end
 
 function DGTimers_AddSelf(spell)
@@ -2412,7 +2414,7 @@ function DGTimers_AddSelf(spell)
 	end
 	
 	if self == 0 then
-		table.insert(casted, { ["target"] = "Self", type = "player" })
+		table.insert(casted, { ["target"] = "Self", type = "blank" })
 		self = getn(casted)
 	end
 	
@@ -2437,10 +2439,10 @@ function DGTimers_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6)
 		--DGTimers_AddSelf({ ["spell"] = string.format("SS (%s)",target), ["duration"] = 1800, ["time"] = GetTime() })
 		
 		if (string.find(string.lower(arg1),'gains soulstone resurrection')) then
-		
 			local target = string.sub(arg1, 1, string.find(arg1, ' '))
-			DGTimers_AddSelf({ ["spell"] = string.format("SS (%s)",target), ["duration"] = 1800, ["time"] = GetTime() })
-			
+			if (DGTimers_TargetInGroup(target)) then
+	 			DGTimers_AddSelf({ ["spell"] = string.format("SS (%s)",target), ["duration"] = 1800, ["time"] = GetTime() })
+	 		end
 		end
 
 	end
@@ -2454,4 +2456,20 @@ function DGTimers_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6)
 		end
 	end
 
+end
+
+function DGTimers_TargetInGroup(target)
+	local group
+	if GetNumRaidMembers() > 0 then group = "Raid"
+	elseif GetNumPartyMembers() > 0 then group = "Party"
+	end
+	if group then
+		for i = 1,getglobal("GetNum"..group.."Members")() do
+			local name = UnitName(group..i)
+			if (name == target) then
+				return true
+			end
+		end
+	end
+	return false
 end
