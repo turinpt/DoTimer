@@ -2292,6 +2292,10 @@ barColors = {
 	SoulFire = { r = 1, g = 0.24, b = 0.1 },
 	CurseofTongues = { r = 0.7, g = 0.3, b = 0 },
 	SS = { r = 0.7, g = 0.3, b = 0.7 },
+	UnstablePower = { r = 0.1, g = 0.8, b = 0.1 },
+	EphemeralPower = { r = 0.1, g = 0.8, b = 0.1 },
+	ToEP = { r = 0.4, g = 0.48, b = 0.83 },
+	ZHC = { r = 0.8, g = 0.8, b = 0.8 }
 }
 
 
@@ -2299,73 +2303,77 @@ function DGTimers_OnUpdate()
 	
 	local time = GetTime()
 	local counter = 1
+	local self = { ["type"] = "blank" }
 	
 	if table.getn(casted) == 0 then DoTimerFrame:SetScript("OnUpdate",nil) end
 	if table.getn(casted) == 1 then DoTimerFrame:SetScript("OnUpdate",function() DoTimer_OnUpdate() end) end
 
+	-- Buffs
+	for i = 1, 32 do
+		local buff = UnitBuff("player", i)
+
+		-- ZHC
+		if(buff and buff == "Interface\\Icons\\Spell_Lightning_LightningBolt01") then
+
+			local obj = { ["spell"] = "Unstable Power",
+						  ["duration"] = 20, 
+						  ["time"] = time }
+			DG_UpdateBar(self, obj, counter, GetPlayerBuffTimeLeft(i))
+			counter = counter + 1
+
+		end
+
+		-- ToEP
+		if(buff and buff == "Interface\\Icons\\Spell_Holy_MindVision") then
+
+			local obj = { ["spell"] = "Ephemeral Power",
+						  ["duration"] = 15,
+						  ["time"] = time }
+			DG_UpdateBar(self, obj, counter, GetPlayerBuffTimeLeft(i))
+			counter = counter + 1
+
+		end
+	end
+
+	-- DoT Timers
 	for i = 1,table.getn(casted) do
 		for id = 1,table.getn(casted[i]) do
 		
-			remaining = casted[i][id].duration - time + casted[i][id].time	
-			val = (remaining / casted[i][id].duration) * 100
-			
-			barName = "DGBar"..counter.."Status"
-			bar = getglobal(barName)
-			bar:SetValue(val)
-			
-			local spellName = string.gsub(casted[i][id].spell,"%s+", "")
-			if barColors[spellName] then
-				bar:SetStatusBarColor(barColors[spellName].r,barColors[spellName].g,barColors[spellName].b)
-			elseif string.find(casted[i][id].spell,"SS (.+)") then
-				bar:SetStatusBarColor(barColors["SS"].r,barColors["SS"].g,barColors["SS"].b)
-			else
-				bar:SetStatusBarColor(1,0,0)
-			end
-
-			if spellName == "Banish" then
-				getglobal(barName.."Text"):SetText(casted[i][id].spell..' '..casted[i][id].rank)
-			else
-				getglobal(barName.."Text"):SetText(casted[i][id].spell)
-			end
-			
-			if remaining <= 1.7 and spellName == "Banish" then
-				getglobal(barName.."Text"):SetTextColor(1,0,0)
-				getglobal(barName.."Counter"):SetTextColor(1,0,0)
-			else
-				getglobal(barName.."Text"):SetTextColor(1,1,1)
-				getglobal(barName.."Counter"):SetTextColor(1,1,1)
-			end
-			
-			if id == 1 and counter > 1 then
-				getglobal("DGBar"..counter):SetPoint("TOP", "DGBar"..(counter-1), "BOTTOM", 0, -25)
-			elseif counter > 1 then
-				getglobal("DGBar"..counter):SetPoint("TOP", "DGBar"..(counter-1), "BOTTOM", 0, -2)
-			end
-			
-			if id == 1 then
-				if casted[i].type == "mob" then
-					getglobal(barName.."Target"):SetText(string.format("%s [%d]",casted[i].target,casted[i].level))
-				else
-					getglobal(barName.."Target"):SetText("")
-				end
-				getglobal(barName.."Target"):SetFont(GameFontNormal:GetFont(), 10, "")
-				getglobal(barName.."Target"):SetTextColor(1,0.9,0)
-				getglobal(barName.."Target"):Show()
-			else
-				getglobal(barName.."Target"):Hide()
-			end
-
-			getglobal(barName.."Text"):SetFont(GameFontNormal:GetFont(), 11, "")
-			getglobal(barName.."Counter"):SetFont(GameFontNormal:GetFont(), 11, "")
-			getglobal(barName.."Counter"):SetText(DG_ReturnNewDuration(remaining))
-			getglobal(barName.."Spark"):SetPoint("CENTER", bar, "LEFT", (val / 100) * bar:GetWidth(), -1)
-			getglobal("DGBar"..counter):Show()
-			
-			
+			local remaining = casted[i][id].duration - time + casted[i][id].time	
+			DG_UpdateBar(casted[i], casted[i][id], counter, remaining)
 			counter = counter + 1
+			
 		end
 	end
-	
+
+	-- Inventory
+	for i = 13, 14 do
+
+		local start, duration = GetInventoryItemCooldown("player", i)
+		local texture = GetInventoryItemTexture("player", i)
+
+		-- ToEP
+		if (start > 0 and duration > 0 and texture == "Interface\\Icons\\INV_Misc_StoneTablet_11") then
+			local obj = {	["spell"] = "ToEP",
+							["duration"] = duration,
+							["time"] = start }
+			local remaining = duration - time + start
+			DG_UpdateBar(self, obj, counter, remaining)
+			counter = counter + 1
+		end
+
+		-- ZHC
+		if (start > 0 and duration > 0 and texture == "Interface\\Icons\\INV_Jewelry_Necklace_13") then
+			local obj = {	["spell"] = "ZHC",
+							["duration"] = duration,
+							["time"] = start }
+			local remaining = duration - time + start
+			DG_UpdateBar(self, obj, counter, remaining)
+			counter = counter + 1
+		end
+
+	end
+
     while getglobal("DGBar"..counter):IsVisible() do
       getglobal("DGBar"..counter):Hide()
 	  counter = counter + 1
@@ -2373,6 +2381,63 @@ function DGTimers_OnUpdate()
 	
 	DoTimer_ScanDebuffs()
 	DoTimer_ScanBuffs()
+end
+
+function DG_UpdateBar(target, obj, counter, remaining)
+	local val = (remaining / obj.duration) * 100
+	
+	local barName = "DGBar"..counter.."Status"
+	local bar = getglobal(barName)
+	bar:SetValue(val)
+	
+	local spellName = string.gsub(obj.spell,"%s+", "")
+	if barColors[spellName] then
+		bar:SetStatusBarColor(barColors[spellName].r,barColors[spellName].g,barColors[spellName].b)
+	elseif string.find(obj.spell,"SS (.+)") then
+		bar:SetStatusBarColor(barColors["SS"].r,barColors["SS"].g,barColors["SS"].b)
+	else
+		bar:SetStatusBarColor(1,0,0)
+	end
+
+	if spellName == "Banish" then
+		getglobal(barName.."Text"):SetText(obj.spell..' '..obj.rank)
+	else
+		getglobal(barName.."Text"):SetText(obj.spell)
+	end
+	
+	if remaining <= 1.7 and spellName == "Banish" then
+		getglobal(barName.."Text"):SetTextColor(1,0,0)
+		getglobal(barName.."Counter"):SetTextColor(1,0,0)
+	else
+		getglobal(barName.."Text"):SetTextColor(1,1,1)
+		getglobal(barName.."Counter"):SetTextColor(1,1,1)
+	end
+	
+	if id == 1 and counter > 1 then
+		getglobal("DGBar"..counter):SetPoint("TOP", "DGBar"..(counter-1), "BOTTOM", 0, -25)
+	elseif counter > 1 then
+		getglobal("DGBar"..counter):SetPoint("TOP", "DGBar"..(counter-1), "BOTTOM", 0, -2)
+	end
+	
+	if id == 1 then
+		if target.type == "mob" then
+			getglobal(barName.."Target"):SetText(string.format("%s [%d]",target.target,target.level))
+		else
+			getglobal(barName.."Target"):SetText("")
+		end
+		getglobal(barName.."Target"):SetFont(GameFontNormal:GetFont(), 10, "")
+		getglobal(barName.."Target"):SetTextColor(1,0.9,0)
+		getglobal(barName.."Target"):Show()
+	else
+		getglobal(barName.."Target"):Hide()
+	end
+
+	getglobal(barName.."Text"):SetFont(GameFontNormal:GetFont(), 11, "")
+	getglobal(barName.."Counter"):SetFont(GameFontNormal:GetFont(), 11, "")
+	getglobal(barName.."Counter"):SetText(DG_ReturnNewDuration(remaining))
+	getglobal(barName.."Spark"):SetPoint("CENTER", bar, "LEFT", (val / 100) * bar:GetWidth(), -1)
+	getglobal("DGBar"..counter):Show()
+	
 end
 
 function DG_ReturnNewDuration(time)
@@ -2445,7 +2510,8 @@ function DGTimers_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6)
 		
 		if (string.find(string.lower(arg1),'gains soulstone resurrection')) then
 			local target = string.sub(arg1, 1, string.find(arg1, ' '))
-			if (DGTimers_TargetInGroup(target)) then
+			if (DGTimers_TargetInGroup(target) == 1) then
+				print(target)
 	 			DGTimers_AddSelf({ ["spell"] = string.format("SS (%s)",target), ["duration"] = 1800, ["time"] = GetTime() })
 	 		end
 		end
@@ -2471,10 +2537,10 @@ function DGTimers_TargetInGroup(target)
 	if group then
 		for i = 1,getglobal("GetNum"..group.."Members")() do
 			local name = UnitName(group..i)
-			if (name == target) then
-				return true
+			if (string.lower(name) == string.lower(target)) then
+				return 1
 			end
 		end
 	end
-	return false
+	return 0
 end
