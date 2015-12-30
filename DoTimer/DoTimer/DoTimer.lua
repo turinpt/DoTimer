@@ -2310,10 +2310,13 @@ function DGTimers_OnUpdate()
 
 	-- Buffs
 	for i = 1, 32 do
-		local buff = UnitBuff("player", i)
+		local buff = GetPlayerBuffTexture(i)
+		if(not buff) then
+			break
+		end
 
 		-- ZHC
-		if(buff and buff == "Interface\\Icons\\Spell_Lightning_LightningBolt01") then
+		if(buff == "Interface\\Icons\\Spell_Lightning_LightningBolt01") then
 
 			local obj = { ["spell"] = "Unstable Power",
 						  ["duration"] = 20, 
@@ -2324,7 +2327,7 @@ function DGTimers_OnUpdate()
 		end
 
 		-- ToEP
-		if(buff and buff == "Interface\\Icons\\Spell_Holy_MindVision") then
+		if(buff == "Interface\\Icons\\Spell_Holy_MindVision") then
 
 			local obj = { ["spell"] = "Ephemeral Power",
 						  ["duration"] = 15,
