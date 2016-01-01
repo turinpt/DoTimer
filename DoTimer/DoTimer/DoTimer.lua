@@ -2303,6 +2303,7 @@ watchedBuffs = { 'Interface\\Icons\\Spell_Lightning_LightningBolt01', 'Interface
 watchedTrinkets = { 'Interface\\Icons\\INV_Misc_StoneTablet_11', 'Interface\\Icons\\INV_Jewelry_Necklace_13' }
 watchedSpells = { 158, 43, 116 }
 watchedItems = { 'Mana Potion' }
+watchedActions = { 'Interface\\Icons\\INV_Misc_Orb_04' }
 
 function DGTimers_OnUpdate()
 	
@@ -2363,6 +2364,20 @@ function DGTimers_OnUpdate()
 			end
 		end
 
+	end
+
+	-- Actions
+	for _, action in pairs(watchedActions) do
+		for i = 1, 100 do
+			local texture = GetActionTexture(i)
+			if texture == action then
+				local start, duration = GetActionCooldown(i)
+				local remaining = duration - time + start
+				if start > 0 and duration > 2 and remaining < 120 then
+					table.insert(icons, { texture = texture, remaining = remaining})
+				end
+			end
+		end
 	end
 
 	-- Items
@@ -2499,6 +2514,15 @@ function test()
 	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 5, 27)
 	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 6, 27)
 
+end
+
+function printSpells()
+	for i = 1,300 do
+		if GetSpellName(i, BOOKTYPE_SPELL) then
+			local msg = i .. " - " ..GetSpellName(i, BOOKTYPE_SPELL)
+			DEFAULT_CHAT_FRAME:AddMessage(msg)
+		end
+	end
 end
 
 function DGTimers_AddSelf(spell)
