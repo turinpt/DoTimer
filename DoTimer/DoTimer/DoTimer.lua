@@ -2280,7 +2280,6 @@ end
 ------------------------------------------------------------------------------------------------------------
 
 barColors = {
-	ManaPotion = { r = 0.09, g = 0.34, b = 0.90 },
 	Immolate = { r = 1, g = 0.9, b = 0 },
 	Corruption = { r = 0.5, g = 0, b = 0 },
 	CurseofAgony = { r = 1, g = 0.35, b = 0 },
@@ -2295,86 +2294,104 @@ barColors = {
 	UnstablePower = { r = 0.1, g = 0.8, b = 0.1 },
 	EphemeralPower = { r = 0.1, g = 0.8, b = 0.1 },
 	ToEP = { r = 0.4, g = 0.48, b = 0.83 },
-	ZHC = { r = 0.8, g = 0.8, b = 0.8 }
+	ZHC = { r = 0.8, g = 0.8, b = 0.8 },
+	CurseofShadow = { r = 0, g = 0.05, b = 0.7 },
+	CurseoftheElements = { r = 0.5, g = 0.12, b = 0.7 },
 }
 
+watchedBuffs = { 'Interface\\Icons\\Spell_Lightning_LightningBolt01', 'Interface\\Icons\\Spell_Holy_MindVision' }
+watchedTrinkets = { 'Interface\\Icons\\INV_Misc_StoneTablet_11', 'Interface\\Icons\\INV_Jewelry_Necklace_13' }
+watchedSpells = { 158, 43, 116 }
+watchedItems = { 'Mana Potion' }
 
 function DGTimers_OnUpdate()
 	
 	local time = GetTime()
 	local counter = 1
 	local self = { ["type"] = "blank" }
+	local icons = {}
+	local iconCounter = 1
 	
 	if table.getn(casted) == 0 then DoTimerFrame:SetScript("OnUpdate",nil) end
 	if table.getn(casted) == 1 then DoTimerFrame:SetScript("OnUpdate",function() DoTimer_OnUpdate() end) end
 
 	-- Buffs
-	for i = 1, 32 do
+	for i = 0, 31 do
 		local buff = GetPlayerBuffTexture(i)
 		if(not buff) then
 			break
 		end
 
-		-- ZHC
-		if(buff == "Interface\\Icons\\Spell_Lightning_LightningBolt01") then
-
-			local obj = { ["spell"] = "Unstable Power",
-						  ["duration"] = 20, 
-						  ["time"] = time }
-			DG_UpdateBar(self, obj, counter, GetPlayerBuffTimeLeft(i))
-			counter = counter + 1
-
+		for _, value in pairs(watchedBuffs) do
+			if value == buff then
+				table.insert(icons, { texture = buff, remaining = GetPlayerBuffTimeLeft(i)})
+			end
 		end
+	end
 
-		-- ToEP
-		if(buff == "Interface\\Icons\\Spell_Holy_MindVision") then
-
-			local obj = { ["spell"] = "Ephemeral Power",
-						  ["duration"] = 15,
-						  ["time"] = time }
-			DG_UpdateBar(self, obj, counter, GetPlayerBuffTimeLeft(i))
-			counter = counter + 1
-
+	-- Spells
+	for _, spellid in pairs(watchedSpells) do
+		local start, duration = GetSpellCooldown(spellid, BOOKTYPE_SPELL)
+		local texture = GetSpellTexture(spellid, BOOKTYPE_SPELL)
+		if start > 0 and duration > 2 then
+			local remaining = duration - time + start
+			table.insert(icons, { texture = texture, remaining = remaining})
 		end
 	end
 
 	-- DoT Timers
 	for i = 1,table.getn(casted) do
 		for id = 1,table.getn(casted[i]) do
-		
-			local remaining = casted[i][id].duration - time + casted[i][id].time	
+			local remaining = casted[i][id].duration - time + casted[i][id].time
 			DG_UpdateBar(casted[i], casted[i][id], counter, remaining)
 			counter = counter + 1
-			
 		end
 	end
 
-	-- Inventory
+	-- Trinkets
 	for i = 13, 14 do
 
 		local start, duration = GetInventoryItemCooldown("player", i)
 		local texture = GetInventoryItemTexture("player", i)
 
-		-- ToEP
-		if (start > 0 and duration > 0 and texture == "Interface\\Icons\\INV_Misc_StoneTablet_11") then
-			local obj = {	["spell"] = "ToEP",
-							["duration"] = duration,
-							["time"] = start }
-			local remaining = duration - time + start
-			DG_UpdateBar(self, obj, counter, remaining)
-			counter = counter + 1
+		if start > 0 and duration > 30 then
+			for _, value in pairs(watchedTrinkets) do
+				if value == texture then
+					local remaining = duration - time + start
+					table.insert(icons, { texture = texture, remaining = remaining})
+				end
+			end
 		end
 
-		-- ZHC
-		if (start > 0 and duration > 0 and texture == "Interface\\Icons\\INV_Jewelry_Necklace_13") then
-			local obj = {	["spell"] = "ZHC",
-							["duration"] = duration,
-							["time"] = start }
-			local remaining = duration - time + start
-			DG_UpdateBar(self, obj, counter, remaining)
-			counter = counter + 1
-		end
+	end
 
+	-- Items
+	for i = 0, 4 do
+		for j = 1, GetContainerNumSlots(i) do
+			local start, duration = GetContainerItemCooldown(i, j)
+			if start > 0 and duration > 2 then
+				local link = GetContainerItemLink(i, j)
+				for _, value in pairs(watchedItems) do
+					if string.find(link,value) then
+						local texture = GetContainerItemInfo(i, j)
+						local remaining = duration - time + start
+						table.insert(icons, { texture = texture, remaining = remaining})
+					end
+				end
+			end
+		end
+	end
+
+	-- Add Icons
+	table.sort(icons,function(a,b) return (a.remaining) > (b.remaining) end)
+	for _, icon in pairs(icons) do
+		DG_UpdateIcon(icon.texture, iconCounter, icon.remaining)
+		iconCounter = iconCounter + 1
+	end
+
+	-- Clear Icons
+	for i = iconCounter, 6 do
+		getglobal("DGIcon"..i):Hide()
 	end
 
     while getglobal("DGBar"..counter):IsVisible() do
@@ -2456,23 +2473,32 @@ function DG_ReturnNewDuration(time)
 end 
 
 
+function DG_UpdateIcon(file, counter, remaining)
+
+	local iconName = "DGIcon"..counter
+	local icon = getglobal(iconName)
+	local texture = getglobal(iconName.."Texture")
+	local text = getglobal(iconName.."Text")
+
+	texture:SetTexture(file)
+	texture:SetAlpha(0.7)
+	text:SetText(math.floor(remaining + 0.5))
+	
+	getglobal(iconName):Show()
+	
+end
+
 function test()
 	local self = 0
 	local ManaPot = { ["spell"] = "Mana Potion", ["duration"] = 70, ["time"] = GetTime() }
-			
-	for i = 1,table.getn(casted) do
-		if casted[i].target == "Self" then
-			self = i
-			break
-		end
-	end
-			
-	if self == 0 then
-		table.insert(casted, { ["target"] = "", type = "blank" })
-		self = getn(casted)
-	end
-			
-	table.insert(casted[self], ManaPot)
+
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 1, 30)
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 2, 29)
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 3, 28)
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 4, 27)
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 5, 27)
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 6, 27)
+
 end
 
 function DGTimers_AddSelf(spell)
@@ -2522,13 +2548,13 @@ function DGTimers_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6)
 	end
 	
 
-	if (event == "CHAT_MSG_SPELL_SELF_BUFF") then
-		if (string.find(string.lower(arg1),'you gain %d+ mana from restore mana')) then
+	--if (event == "CHAT_MSG_SPELL_SELF_BUFF") then
+	--	if (string.find(string.lower(arg1),'you gain %d+ mana from restore mana')) then
 		
-			DGTimers_AddSelf({ ["spell"] = "Mana Potion", ["duration"] = 120, ["time"] = GetTime() })
+	--		DGTimers_AddSelf({ ["spell"] = "Mana Potion", ["duration"] = 120, ["time"] = GetTime() })
 			
-		end
-	end
+	--	end
+	--end
 
 end
 

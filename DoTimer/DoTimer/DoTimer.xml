@@ -327,7 +327,7 @@
 	
 	<Frame name="DGBarTemplate" drawLayer="BORDER" virtual="true" hidden="true">
 		<Size>
-			<AbsDimension x="170" y="17"/>
+			<AbsDimension x="180" y="18"/>
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER" />
@@ -343,7 +343,7 @@
 
 			<StatusBar name="$parentStatus">
 				<Size>
-					<AbsDimension x="166" y="14"/>
+					<AbsDimension x="176" y="14"/>
 				</Size>
 				<Anchors>
 					<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER" />
@@ -410,6 +410,42 @@
 				</Scripts>
 			</StatusBar>
 		</Frames>
+	</Frame>
+
+	<Frame name="DGIconTemplate" drawLayer="BORDER" virtual="true" hidden="true">
+		<Size>
+			<AbsDimension x="30" y="30"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" />
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentTexture" />
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontHighlight" Height="20">
+					<Color r="1.0" g="1.0" b="0"/>
+					<FontHeight>
+						<AbsValue val="20"/>
+					</FontHeight>
+					<Anchors>
+						<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				this:RegisterForDrag("LeftButton")
+			</OnLoad>
+			<OnDragStart>
+				DGContainer:StartMoving()
+			</OnDragStart>
+			<OnDragStop>
+				DGContainer:StopMovingOrSizing()
+			</OnDragStop>
+		</Scripts>
 	</Frame>
 
 	<Frame name="DGContainer" toplevel="true" movable="true" parent="UIParent">
@@ -604,6 +640,61 @@
 					<Anchor point="TOP" relativeTo="DGBar19" relativePoint="BOTTOM">
 						<Offset>
 							<AbsDimension x="0" y="-2"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<!-- Icons -->
+			<Frame name="DGIcon1" inherits="DGIconTemplate" id="1">
+				<Anchors>
+					<Anchor point="TOP">
+						<Offset>
+							<AbsDimension x="75" y="30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon2" inherits="DGIconTemplate" id="2">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon1" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon3" inherits="DGIconTemplate" id="3">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon2" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon4" inherits="DGIconTemplate" id="4">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon3" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon5" inherits="DGIconTemplate" id="5">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon4" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon6" inherits="DGIconTemplate" id="6">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon5" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
