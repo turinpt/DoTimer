@@ -2401,7 +2401,7 @@ function DGTimers_OnUpdate()
 	end
 
 	-- Clear Icons
-	for i = iconCounter, 2 do
+	for i = iconCounter, 12 do
 		getglobal("DGIcon"..i):Hide()
 	end
 
