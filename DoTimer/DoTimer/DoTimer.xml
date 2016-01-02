@@ -649,7 +649,7 @@
 				<Anchors>
 					<Anchor point="TOP">
 						<Offset>
-							<AbsDimension x="75" y="30"/>
+							<AbsDimension x="75" y="32"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -693,6 +693,60 @@
 			<Frame name="DGIcon6" inherits="DGIconTemplate" id="6">
 				<Anchors>
 					<Anchor point="TOPRIGHT" relativeTo="DGIcon5" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon7" inherits="DGIconTemplate" id="7">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="DGIcon1" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon8" inherits="DGIconTemplate" id="8">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon7" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon9" inherits="DGIconTemplate" id="9">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon8" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon10" inherits="DGIconTemplate" id="10">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon9" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon11" inherits="DGIconTemplate" id="11">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon10" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Frame name="DGIcon12" inherits="DGIconTemplate" id="12">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="DGIcon11" relativePoint="TOPLEFT">
 						<Offset>
 							<AbsDimension x="0" y="0"/>
 						</Offset>

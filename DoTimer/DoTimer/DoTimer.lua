@@ -2291,15 +2291,11 @@ barColors = {
 	SoulFire = { r = 1, g = 0.24, b = 0.1 },
 	CurseofTongues = { r = 0.7, g = 0.3, b = 0 },
 	SS = { r = 0.7, g = 0.3, b = 0.7 },
-	UnstablePower = { r = 0.1, g = 0.8, b = 0.1 },
-	EphemeralPower = { r = 0.1, g = 0.8, b = 0.1 },
-	ToEP = { r = 0.4, g = 0.48, b = 0.83 },
-	ZHC = { r = 0.8, g = 0.8, b = 0.8 },
 	CurseofShadow = { r = 0, g = 0.05, b = 0.7 },
 	CurseoftheElements = { r = 0.5, g = 0.12, b = 0.7 },
 }
 
-watchedBuffs = { 'Interface\\Icons\\Spell_Lightning_LightningBolt01', 'Interface\\Icons\\Spell_Holy_MindVision' }
+watchedBuffs = { 'Interface\\Icons\\Spell_Lightning_LightningBolt01', 'Interface\\Icons\\Spell_Holy_MindVision', 'Interface\\Icons\\INV_Misc_MonsterClaw_04', 'Interface\\Icons\\Spell_Shadow_Twilight' }
 watchedTrinkets = { 'Interface\\Icons\\INV_Misc_StoneTablet_11', 'Interface\\Icons\\INV_Jewelry_Necklace_13' }
 watchedSpells = { 158, 43, 116 }
 watchedItems = { 'Mana Potion' }
@@ -2405,7 +2401,7 @@ function DGTimers_OnUpdate()
 	end
 
 	-- Clear Icons
-	for i = iconCounter, 6 do
+	for i = iconCounter, 2 do
 		getglobal("DGIcon"..i):Hide()
 	end
 
@@ -2496,7 +2492,7 @@ function DG_UpdateIcon(file, counter, remaining)
 	local text = getglobal(iconName.."Text")
 
 	texture:SetTexture(file)
-	texture:SetAlpha(0.7)
+	texture:SetAlpha(0.8)
 	text:SetText(math.floor(remaining + 0.5))
 	
 	getglobal(iconName):Show()
@@ -2504,15 +2500,15 @@ function DG_UpdateIcon(file, counter, remaining)
 end
 
 function test()
-	local self = 0
-	local ManaPot = { ["spell"] = "Mana Potion", ["duration"] = 70, ["time"] = GetTime() }
 
 	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 1, 30)
 	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 2, 29)
 	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 3, 28)
 	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 4, 27)
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 5, 27)
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 6, 27)
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 5, 26)
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 6, 25)
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 7, 24)
+	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 8, 23)
 
 end
 
