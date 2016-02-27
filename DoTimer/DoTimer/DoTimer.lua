@@ -2396,8 +2396,8 @@ function DGTimers_OnUpdate()
 	-- Add Icons
 	table.sort(icons,function(a,b) return (a.remaining) > (b.remaining) end)
 	for _, icon in pairs(icons) do
-		DG_UpdateIcon(icon.texture, iconCounter, icon.remaining)
-		iconCounter = iconCounter + 1
+		--DG_UpdateIcon(icon.texture, iconCounter, icon.remaining)
+		--iconCounter = iconCounter + 1
 	end
 
 	-- Clear Icons
