@@ -339,6 +339,7 @@
 				</Texture>
 			</Layer>
 		</Layers>
+		
 		<Frames>
 
 			<StatusBar name="$parentStatus">
@@ -394,7 +395,7 @@
 						</Texture>
 					</Layer>
 				</Layers>
-				<BarTexture file="Interface\AddOns\LockStuff\Textures\BantoBar"/>
+				<BarTexture file="Interface\AddOns\DoTimer\Textures\Skewed"/>
 				<BarColor r="0.5" g="0" b="0"/>
 				<Scripts>
 					<OnLoad>
@@ -462,7 +463,6 @@
 				</Texture>		
 			</Layer>
 		</Layers>
-		
 		<Frames>
 			<Frame name="DGBar1" inherits="DGBarTemplate" id="1">
 				<Anchors>
@@ -475,171 +475,171 @@
 			</Frame>
 			<Frame name="DGBar2" inherits="DGBarTemplate" id="2">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar1" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar1" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar3" inherits="DGBarTemplate" id="3">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar2" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar2" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar4" inherits="DGBarTemplate" id="4">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar3" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar3" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar5" inherits="DGBarTemplate" id="5">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar4" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar4" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar6" inherits="DGBarTemplate" id="6">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar5" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar5" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar7" inherits="DGBarTemplate" id="7">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar6" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar6" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar8" inherits="DGBarTemplate" id="8">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar7" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar7" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar9" inherits="DGBarTemplate" id="9">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar8" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar8" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar10" inherits="DGBarTemplate" id="10">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar9" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar9" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar11" inherits="DGBarTemplate" id="11">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar10" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar10" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar12" inherits="DGBarTemplate" id="12">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar11" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar11" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar13" inherits="DGBarTemplate" id="13">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar12" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar12" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar14" inherits="DGBarTemplate" id="14">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar13" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar13" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar15" inherits="DGBarTemplate" id="15">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar14" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar14" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar16" inherits="DGBarTemplate" id="16">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar15" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar15" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar17" inherits="DGBarTemplate" id="17">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar16" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar16" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar18" inherits="DGBarTemplate" id="18">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar17" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar17" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar19" inherits="DGBarTemplate" id="19">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar18" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar18" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 			</Frame>
 			<Frame name="DGBar20" inherits="DGBarTemplate" id="20">
 				<Anchors>
-					<Anchor point="TOP" relativeTo="DGBar19" relativePoint="BOTTOM">
+					<Anchor point="BOTTOM" relativeTo="DGBar19" relativePoint="TOP">
 						<Offset>
-							<AbsDimension x="0" y="-2"/>
+							<AbsDimension x="0" y="40"/>
 						</Offset>
 					</Anchor>
 				</Anchors>

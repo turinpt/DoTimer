@@ -2337,8 +2337,8 @@ function DGTimers_OnUpdate()
 	end
 
 	-- DoT Timers
-	for i = 1,table.getn(casted) do
-		for id = 1,table.getn(casted[i]) do
+	for i = table.getn(casted),1,-1 do
+		for id = table.getn(casted[i]),1,-1 do
 			local remaining = casted[i][id].duration - time + casted[i][id].time
 			DG_UpdateBar(casted[i], casted[i][id], counter, remaining)
 			counter = counter + 1
@@ -2445,9 +2445,9 @@ function DG_UpdateBar(target, obj, counter, remaining)
 	end
 	
 	if id == 1 and counter > 1 then
-		getglobal("DGBar"..counter):SetPoint("TOP", "DGBar"..(counter-1), "BOTTOM", 0, -25)
+		getglobal("DGBar"..counter):SetPoint("BOTTOM", "DGBar"..(counter-1), "TOP", 0, 0)
 	elseif counter > 1 then
-		getglobal("DGBar"..counter):SetPoint("TOP", "DGBar"..(counter-1), "BOTTOM", 0, -2)
+		getglobal("DGBar"..counter):SetPoint("BOTTOM", "DGBar"..(counter-1), "TOP", 0, 1)
 	end
 	
 	if id == 1 then
@@ -2495,22 +2495,15 @@ function DG_UpdateIcon(file, counter, remaining)
 	texture:SetAlpha(0.8)
 	text:SetText(math.floor(remaining + 0.5))
 	
-	getglobal(iconName):Show()
+	getglobal(iconName):Show()	
 	
 end
 
-function test()
-
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 1, 30)
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 2, 29)
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 3, 28)
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 4, 27)
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 5, 26)
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 6, 25)
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 7, 24)
-	DG_UpdateIcon("Interface\\Icons\\INV_potion_76", 8, 23)
-
+function print(msg)
+	DEFAULT_CHAT_FRAME:AddMessage(msg)
 end
+
+
 
 function printSpells()
 	for i = 1,300 do
@@ -2519,6 +2512,26 @@ function printSpells()
 			DEFAULT_CHAT_FRAME:AddMessage(msg)
 		end
 	end
+end
+
+function test()
+
+	local self = 0
+	local ManaPot = { ["spell"] = "Corruption", ["duration"] = 70, ["time"] = GetTime() }
+			
+	for i = 1,table.getn(casted) do
+		if casted[i].target == "Self" then
+			self = i
+			break
+		end
+	end
+			
+	if self == 0 then
+		table.insert(casted, { ["target"] = "", type = "blank" })
+		self = getn(casted)
+	end
+			
+	table.insert(casted[self], ManaPot)
 end
 
 function DGTimers_AddSelf(spell)
