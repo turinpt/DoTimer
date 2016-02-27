@@ -2337,8 +2337,8 @@ function DGTimers_OnUpdate()
 	end
 
 	-- DoT Timers
-	for i = table.getn(casted),1,-1 do
-		for id = table.getn(casted[i]),1,-1 do
+	for i = 1,table.getn(casted) do
+		for id = 1,table.getn(casted[i]) do
 			local remaining = casted[i][id].duration - time + casted[i][id].time
 			DG_UpdateBar(casted[i], casted[i][id], counter, remaining)
 			counter = counter + 1
