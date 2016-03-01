@@ -754,8 +754,15 @@ CastSpell = DoTimer_CS
 
 Old_UA = UseAction
 function DoTimer_UA(cspell,cursor,onself) 
-	local spellname,spellrank = SpellSystem_SetAction(cspell)
-	if (GetActionCount(cspell) > 0) or (GetActionText(cspell)) or (not DoTimer_Settings.manacheck) or (DoTimer_EnoughMana(spellname,spellrank)) then Old_UA(cspell,cursor,onself) end
+	local texture = GetActionTexture(cspell)
+	if texture == "Interface\\Icons\\INV_Stone_04" and GetActionCount(cspell) == 0 then
+		CastSpellByName("Create Healthstone (Major)()")
+	elseif texture == "Interface\\Icons\\INV_Misc_Orb_04" and GetActionCount(cspell) == 0 then
+		CastSpellByName("Create Soulstone (Major)()")
+	else
+		local spellname,spellrank = SpellSystem_SetAction(cspell)
+		if (GetActionCount(cspell) > 0) or (GetActionText(cspell)) or (not DoTimer_Settings.manacheck) or (DoTimer_EnoughMana(spellname,spellrank)) then Old_UA(cspell,cursor,onself) end
+	end
 end
 UseAction = DoTimer_UA
 
@@ -2551,58 +2558,4 @@ function DGTimers_AddSelf(spell)
 	end
 	
 	table.insert(casted[self], spell)
-end
-
-
-function DGTimers_OnLoad()
-	
-	this:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_BUFFS");
-	this:RegisterEvent("CHAT_MSG_SPELL_SELF_BUFF");
-	
-end
-
-
-
-function DGTimers_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6)
-
-	if (event == "CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_BUFFS") then
-		
-		--local target = string.sub(arg1, 1, string.find(arg1, ' '))
-		--DGTimers_AddSelf({ ["spell"] = string.format("SS (%s)",target), ["duration"] = 1800, ["time"] = GetTime() })
-		
-		if (string.find(string.lower(arg1),'gains soulstone resurrection')) then
-			local target = string.sub(arg1, 1, string.find(arg1, ' '))
-			if (DGTimers_TargetInGroup(target) == 1) then
-				print(target)
-	 			DGTimers_AddSelf({ ["spell"] = string.format("SS (%s)",target), ["duration"] = 1800, ["time"] = GetTime() })
-	 		end
-		end
-
-	end
-	
-
-	--if (event == "CHAT_MSG_SPELL_SELF_BUFF") then
-	--	if (string.find(string.lower(arg1),'you gain %d+ mana from restore mana')) then
-		
-	--		DGTimers_AddSelf({ ["spell"] = "Mana Potion", ["duration"] = 120, ["time"] = GetTime() })
-			
-	--	end
-	--end
-
-end
-
-function DGTimers_TargetInGroup(target)
-	local group
-	if GetNumRaidMembers() > 0 then group = "Raid"
-	elseif GetNumPartyMembers() > 0 then group = "Party"
-	end
-	if group then
-		for i = 1,getglobal("GetNum"..group.."Members")() do
-			local name = UnitName(group..i)
-			if (string.lower(name) == string.lower(target)) then
-				return 1
-			end
-		end
-	end
-	return 0
 end
